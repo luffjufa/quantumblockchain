@@ -1,0 +1,119 @@
+[
+    {
+        "index": 0,
+        "timestamp": "2026-10-19T21:34:25.790862",
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "transactions": [
+            {
+                "sender": "NETWORK",
+                "sender_pub": "SYSTEM",
+                "recipient": "Jesse_Genesis",
+                "amount": 50000.0,
+                "signature": "GENESIS"
+            }
+        ],
+        "tensor_metrics": {
+            "spectral_entropy": 0.5,
+            "shear_factor": 0.05
+        },
+        "invariant": 6.0,
+        "difficulty": 3,
+        "nonce": 0,
+        "hash": "4092599f248975fa9992fe830bccc02e8367346e50ce384a750668d18311f344"
+    },
+    {
+        "index": 1,
+        "timestamp": "2026-10-19T22:21:17.100514",
+        "previous_hash": "4092599f248975fa9992fe830bccc02e8367346e50ce384a750668d18311f344",
+        "transactions": [
+            {
+                "sender": "NETWORK",
+                "sender_pub": "SYSTEM",
+                "recipient": "8188FA070A60A91F",
+                "amount": 50.0,
+                "signature": "BLOCK_REWARD"
+            }
+        ],
+        "tensor_metrics": {
+            "spectral_entropy": 0.52,
+            "shear_factor": 0.04
+        },
+        "invariant": 7.5,
+        "difficulty": 3,
+        "nonce": 4633,
+        "hash": "000c17586f7b9620a4b1808c7a97e015bfd68b63b37f66fcb6a0d31ef8551b72"
+    },
+    {
+        "index": 2,
+        "timestamp": "2026-10-19T22:25:04.051929",
+        "previous_hash": "000c17586f7b9620a4b1808c7a97e015bfd68b63b37f66fcb6a0d31ef8551b72",
+        "transactions": [
+            {
+                "sender": "NETWORK",
+                "sender_pub": "SYSTEM",
+                "recipient": "8188FA070A60A91F",
+                "amount": 50.0,
+                "signature": "BLOCK_REWARD"
+            }
+        ],
+        "tensor_metrics": {
+            "spectral_entropy": 0.45,
+            "shear_factor": 0.02
+        },
+        "invariant": 6.8,
+        "difficulty": 3,
+        "nonce": 114,
+        "hash": "00081a77b40963a43316d86e2fd3777885e31f7cd1aec6d37eacc24dd746b505"
+    },
+    {
+        "index": 3,
+        "timestamp": "2026-10-19T22:32:40.545612",
+        "previous_hash": "00081a77b40963a43316d86e2fd3777885e31f7cd1aec6d37eacc24dd746b505",
+        "transactions": [
+            {
+                "sender": "NETWORK",
+                "sender_pub": "SYSTEM",
+                "recipient": "23799E75DDCB3260",
+                "amount": 50.0,
+                "signature": "BLOCK_REWARD"
+            }
+        ],
+        "tensor_metrics": {
+            "spectral_entropy": 0.48,
+            "shear_factor": 0.01
+        },
+        "invariant": 7.1,
+        "difficulty": 3,
+        "nonce": 367,
+        "hash": "000f6459871b183d444c024363bb1cc67513727a326ddb87d7212459cff806b0"
+    },
+    {
+        "index": 4,
+        "timestamp": "2026-10-19T22:36:28.495663",
+        "previous_hash": "000f6459871b183d444c024363bb1cc67513727a326ddb87d7212459cff806b0",
+        "transactions": [
+            {
+                "sender": "23799E75DDCB3260",
+                "sender_pub": "23799E75DDCB3260A9C029F0DE4873080F6798A10941EB17BAAF0275BC5056DA",
+                "recipient": "RECIPIENT_NODE_VAULT_B",
+                "amount": 10.0,
+                "signature": "jWB16vyJmv987nckIFzWYiXkcEL5xtvha93KLwhQBoSVNqqIe6+EnpjUIXpIsAvlbQ77EHudvnN1xyL2dqzdBA=="
+            },
+            {
+                "sender": "NETWORK",
+                "sender_pub": "SYSTEM",
+                "recipient": "23799E75DDCB3260",
+                "amount": 50.0,
+                "signature": "BLOCK_REWARD"
+            }
+        ],
+        "tensor_metrics": {
+            "spectral_entropy": 0.55,
+            "shear_factor": 0.02
+        },
+        "invariant": 8.2,
+        "difficulty": 3,
+        "nonce": 8618,
+        "hash": "000181408135985ca65737283660a773bb6538f241a88cbc8c6f529b76bbdc04"
+    }
+]
