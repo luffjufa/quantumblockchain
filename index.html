@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logos Sovereign - Quantum Cloud Matrix</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000003; color: #00ffcc; font-family: monospace; overflow: hidden; }
+        #hud { position: absolute; top: 20px; left: 20px; background: rgba(0,0,10,0.9); border: 1px solid #00ffcc; padding: 20px; z-index: 10; border-radius: 8px; box-shadow: 0 0 35px rgba(0,255,204,0.3); pointer-events: none; width: 340px; }
+        h1 { margin: 0 0 10px 0; font-size: 15px; text-shadow: 0 0 12px #00ffcc; letter-spacing: 1.5px; }
+        .stat { margin: 8px 0; font-size: 13px; display: flex; justify-content: space-between; }
+        .stat span { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="hud">
+        <h1>QUANTUM CLOUD LEDGER</h1>
+        <div class="stat">Blocks Mined: <span id="block-count">Loading...</span></div>
+        <div class="stat">Mempool Transactions: <span id="mempool-count">0</span></div>
+        <div class="stat">Active AI Tasks: <span id="task-count">0</span></div>
+        <div class="stat">Spectral Entropy (λ): <span id="entropy">0.0</span></div>
+        <div class="stat">Shear Factor (σ): <span id="shear">0.0</span></div>
+        <div class="stat">Tensor Invariant (Uν): <span id="invariant">Loading...</span></div>
+        <div class="stat">System State: <span id="sys-status" style="color: #00ff88;">CLOUD SYNCHRONIZED</span></div>
+    </div>
+    <script>
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000003, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        const coreLight = new THREE.PointLight(0x00ffff, 25, 70);
+        coreLight.position.set(0, 0, 0);
+        scene.add(coreLight);
+
+        // 1. Central Cryptographic Cube Matrix
+        const rubikGroup = new THREE.Group();
+        const cubes = [];
+        const boxSize = 0.55;
+        const spacing = 0.65;
+
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                for (let z = -1; z <= 1; z++) {
+                    const geom = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+                    const mat = new THREE.MeshStandardMaterial({
+                        color: 0x00ffcc,
+                        emissive: 0x003333,
+                        metalness: 0.9,
+                        roughness: 0.1
+                    });
+                    const cube = new THREE.Mesh(geom, mat);
+                    cube.position.set(x * spacing * 1.5, y * spacing * 1.5, z * spacing * 1.5);
+                    cube.userData = { ox: cube.position.x, oy: cube.position.y, oz: cube.position.z };
+                    
+                    const wireGeom = new THREE.BoxGeometry(boxSize * 1.04, boxSize * 1.04, boxSize * 1.04);
+                    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.7 });
+                    cube.add(new THREE.Mesh(wireGeom, wireMat));
+
+                    rubikGroup.add(cube);
+                    cubes.push(cube);
+                }
+            }
+        }
+        scene.add(rubikGroup);
+
+        // 2. Volumetric Quantum Cloud Formations (Soft Drifting Nebula Clouds)
+        const cloudCount = 6000;
+        const cGeo = new THREE.BufferGeometry();
+        const cPos = new Float32Array(cloudCount * 3);
+        const cColors = new Float32Array(cloudCount * 3);
+        const basePositions = new Float32Array(cloudCount * 3);
+        const color = new THREE.Color();
+
+        for(let i = 0; i < cloudCount; i++) {
+            let u = Math.random();
+            let v = Math.random();
+            let theta = u * 2.0 * Math.PI;
+            let phi = Math.acos(2.0 * v - 1.0);
+            let r = 7.0 * Math.cbrt(Math.random());
+
+            let x = r * Math.sin(phi) * Math.cos(theta);
+            let y = r * Math.sin(phi) * Math.sin(theta);
+            let z = r * Math.cos(phi);
+
+            basePositions[i * 3] = x;
+            basePositions[i * 3 + 1] = y;
+            basePositions[i * 3 + 2] = z;
+
+            cPos[i * 3] = x;
+            cPos[i * 3 + 1] = y;
+            cPos[i * 3 + 2] = z;
+
+            // Soft cyan to deep blue-violet cloud palette
+            let hue = 0.5 + Math.random() * 0.2;
+            color.setHSL(hue, 0.8, 0.5);
+            cColors[i * 3] = color.r;
+            cColors[i * 3 + 1] = color.g;
+            cColors[i * 3 + 2] = color.b;
+        }
+
+        cGeo.setAttribute('position', new THREE.BufferAttribute(cPos, 3));
+        cGeo.setAttribute('color', new THREE.BufferAttribute(cColors, 3));
+
+        const cMat = new THREE.PointsMaterial({
+            size: 0.25, // Larger soft points to form volumetric cloud textures
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.45,
+            blending: THREE.AdditiveBlending
+        });
+
+        const cloudSystem = new THREE.Points(cGeo, cMat);
+        scene.add(cloudSystem);
+
+        camera.position.z = 7.5;
+
+        let liveEntropy = 0.65;
+        let liveShear = 0.04;
+        let liveInvariant = 8.5;
+        let isComputing = false;
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            let time = Date.now() * 0.001;
+
+            rubikGroup.rotation.y += 0.003 * liveInvariant;
+            rubikGroup.rotation.x += 0.001 * liveEntropy;
+            cloudSystem.rotation.y -= 0.001;
+
+            // Dynamic cube matrix reaction during compute loads
+            cubes.forEach((cube, index) => {
+                if (isComputing) {
+                    if (index % 3 === 0) {
+                        cube.rotation.x += 0.04;
+                        cube.position.y = cube.userData.oy + Math.sin(time * 10 + index) * 0.5;
+                    } else if (index % 3 === 1) {
+                        cube.rotation.y += 0.04;
+                        cube.position.x = cube.userData.ox + Math.cos(time * 10 + index) * 0.5;
+                    } else {
+                        cube.rotation.z += 0.04;
+                        cube.position.z = cube.userData.oz + Math.sin(time * 12) * 0.5;
+                    }
+                } else {
+                    cube.rotation.x *= 0.95;
+                    cube.rotation.y *= 0.95;
+                    cube.rotation.z *= 0.95;
+                    cube.position.x += (cube.userData.ox - cube.position.x) * 0.1;
+                    cube.position.y += (cube.userData.oy - cube.position.y) * 0.1;
+                    cube.position.z += (cube.userData.oz - cube.position.z) * 0.1;
+                }
+            });
+
+            // Fluid cloud drift calculations driven by live tensor parameters
+            const positions = cloudSystem.geometry.attributes.position.array;
+            const colors = cloudSystem.geometry.attributes.color.array;
+
+            for(let i = 0; i < cloudCount; i++) {
+                let bx = basePositions[i * 3];
+                let by = basePositions[i * 3 + 1];
+                let bz = basePositions[i * 3 + 2];
+
+                let drift = Math.sin(bx * liveEntropy * 0.5 + time * 1.5) * Math.cos(by * liveShear * 10 + time * 1.0);
+                
+                positions[i * 3] = bx + drift * liveShear * 8.0;
+                positions[i * 3 + 1] = by + drift * liveEntropy * 1.2;
+                positions[i * 3 + 2] = bz + Math.cos(time * 0.8 + i * 0.005) * liveShear * 4.0;
+
+                let hue = (0.45 + Math.sin(time * 0.3 + i * 0.001) * 0.15) % 1.0;
+                color.setHSL(hue, 0.9, 0.55);
+                colors[i * 3] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+            }
+            cloudSystem.geometry.attributes.position.needsUpdate = true;
+            cloudSystem.geometry.attributes.color.needsUpdate = true;
+
+            if (isComputing) {
+                coreLight.intensity = 45 + Math.sin(time * 25) * 20;
+                coreLight.color.setHex(0xff00aa);
+            } else {
+                coreLight.intensity = 25;
+                coreLight.color.setHex(0x00ffff);
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        async function fetchTelemetry() {
+            try {
+                let res = await fetch('/telemetry');
+                let data = await res.json();
+                
+                document.getElementById('block-count').innerText = data.total_blocks;
+                document.getElementById('mempool-count').innerText = data.mempool_tx_count;
+                document.getElementById('task-count').innerText = data.pending_ai_tasks;
+                
+                let metrics = data.latest_tensor_metrics || {};
+                liveEntropy = metrics.spectral_entropy || 0.65;
+                liveShear = metrics.shear_factor || 0.04;
+                liveInvariant = data.latest_invariant || 8.5;
+
+                document.getElementById('entropy').innerText = liveEntropy.toFixed(4);
+                document.getElementById('shear').innerText = liveShear.toFixed(4);
+                document.getElementById('invariant').innerText = liveInvariant;
+
+                if (data.mempool_tx_count > 0 || data.pending_ai_tasks > 0) {
+                    isComputing = true;
+                    document.getElementById('sys-status').innerText = "CLOUD COMPUTING";
+                    document.getElementById('sys-status').style.color = "#ff00aa";
+                } else {
+                    isComputing = false;
+                    document.getElementById('sys-status').innerText = "CLOUD SYNCHRONIZED";
+                    document.getElementById('sys-status').style.color = "#00ff88";
+                }
+            } catch(e) {
+                console.error("Telemetry fetch error", e);
+            }
+        }
+        setInterval(fetchTelemetry, 2000);
+        fetchTelemetry();
+    </script>
+</body>
+</html>
