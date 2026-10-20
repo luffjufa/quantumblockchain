@@ -1,37 +1,47 @@
 ﻿import asyncio
 import json
+import websockets
+from logos_physics_validator import LogosPhysicsEngine
 
-class LogosP2PNode:
-    def __init__(self, host="127.0.0.1", port=9000):
+class SovereignNodeNetwork:
+    def __init__(self, host="127.0.0.1", port=8765):
         self.host = host
         self.port = port
-        self.peers = set()
+        self.connected_peers = set()
+        self.physics = LogosPhysicsEngine()
 
-    async def register_peer(self, peer_uri):
-        self.peers.add(peer_uri)
+    async def register(self, websocket):
+        self.connected_peers.add(websocket)
+        print(f"[+] Peer connected. Total active peers: {len(self.connected_peers)}")
 
-    async def broadcast_block(self, block_data):
-        payload = json.dumps({"type": "NEW_BLOCK", "data": block_data})
-        for peer in self.peers:
-            try:
-                reader, writer = await asyncio.open_connection(*peer.split(":"))
-                writer.write(payload.encode("utf-8"))
-                await writer.drain()
-                writer.close()
-                await writer.wait_closed()
-            except Exception:
-                pass
+    async def unregister(self, websocket):
+        self.connected_peers.remove(websocket)
+        print(f"[-] Peer disconnected. Total active peers: {len(self.connected_peers)}")
 
-    async def handle_connection(self, reader, writer):
-        data = await reader.read(65536)
-        if data:
-            try:
-                json.loads(data.decode("utf-8"))
-            except json.JSONDecodeError:
-                pass
-        writer.close()
+    async def broadcast_telemetry(self, websocket, path):
+        await self.register(websocket)
+        try:
+            while True:
+                telemetry = {
+                    "node": "The Architect - Sovereign Master Core",
+                    "status": "ONLINE",
+                    "manifold_state": self.physics.compute_commutator_field()
+                }
+                await websocket.send(json.dumps(telemetry))
+                await asyncio.sleep(2.0)
+        except websockets.exceptions.ConnectionClosed:
+            pass
+        finally:
+            await self.unregister(websocket)
 
     async def start_server(self):
-        server = await asyncio.start_server(self.handle_connection, self.host, self.port)
-        async with server:
-            await server.serve_forever()
+        print(f"[*] Starting Sovereign P2P WebSocket Node on ws://{self.host}:{self.port}")
+        async with websockets.serve(self.broadcast_telemetry, self.host, self.port):
+            await asyncio.Future()
+
+if __name__ == "__main__":
+    node = SovereignNodeNetwork()
+    try:
+        asyncio.run(node.start_server())
+    except KeyboardInterrupt:
+        print("[!] Sovereign Node shut down gracefully by The Architect.")
