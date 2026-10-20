@@ -5,16 +5,20 @@
     <title>Logos Sovereign Master Core - Telemetry Cockpit</title>
     <style>
         body { margin: 0; background: #050508; color: #00ffcc; font-family: monospace; overflow: hidden; }
-        #hud { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.8); border: 1px solid #00ffcc; padding: 15px; border-radius: 4px; pointer-events: none; }
-        h1 { margin: 0 0 10px 0; font-size: 16px; letter-spacing: 2px; }
+        #hud { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.85); border: 1px solid #00ffcc; padding: 20px; border-radius: 6px; pointer-events: none; width: 320px; box-shadow: 0 0 15px rgba(0,255,204,0.2); }
+        h1 { margin: 0 0 10px 0; font-size: 16px; letter-spacing: 2px; border-bottom: 1px solid #00ffcc; padding-bottom: 5px; }
+        .metric { margin: 8px 0; font-size: 13px; }
+        .label { color: #88ffcc; }
     </style>
 </head>
 <body>
     <div id="hud">
         <h1>LOGOS SOVEREIGN CORE</h1>
-        <p>Author: The Architect</p>
-        <p>Status: <span id="status">Connecting...</span></p>
-        <p>Energy Density: <span id="density">0.00</span></p>
+        <div class="metric"><span class="label">Author:</span> The Architect</div>
+        <div class="metric"><span class="label">Status:</span> <span id="status">Connecting...</span></div>
+        <div class="metric"><span class="label">Energy Density:</span> <span id="density">0.00</span></div>
+        <div class="metric"><span class="label">Wallet Balance:</span> <span id="balance">0.00</span> LUFF</div>
+        <div class="metric"><span class="label">Active Peers:</span> <span id="peers">0</span></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
@@ -25,7 +29,7 @@
         document.body.appendChild(renderer.domElement);
 
         const geometry = new THREE.BufferGeometry();
-        const particleCount = 1000;
+        const particleCount = 1200;
         const posArray = new Float32Array(particleCount * 3);
         for(let i = 0; i < particleCount * 3; i++) {
             posArray[i] = (Math.random() - 0.5) * 10;
@@ -41,6 +45,9 @@
             const data = JSON.parse(event.data);
             document.getElementById("status").innerText = data.status;
             document.getElementById("density").innerText = data.manifold_state.energy_density.toFixed(4);
+            document.getElementById("balance").innerText = data.ledger_state.balance.toFixed(2);
+            document.getElementById("peers").innerText = data.ledger_state.active_peers_count;
+            
             particleMesh.rotation.y += 0.001 * (data.manifold_state.energy_density * 0.1 + 1);
         };
 
